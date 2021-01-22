@@ -47,7 +47,7 @@
 			async testInterface() {
 				//#ifdef H5
 				this.$axios({
-				  url: '/api/sys/login',
+				  url: '/sys/login',
 				  method: 'post',
 				  data: this.$axios.adornParams({
 					'captcha': 'nfxp4',
@@ -66,7 +66,7 @@
 				})
 				console.log(uni.getStorageSync('token'))
 				this.$axios({
-				  url: '/api/sys/articleauthor/list',
+				  url: '/sys/articleauthor/list',
 				  method: 'get',
 				  params: this.$axios.adornParams({
 				    'page': 1,

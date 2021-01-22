@@ -69,12 +69,12 @@
 	"h5" : {
 	    "devServer" : {
 	        "proxy": {
-	            "/api": {
+	            "/sys": {
 	                "target": "http://localhost:8080/renren-fast",
 	                "changeOrigin": true,
 	                "secure": false,
 					"pathRewrite": {
-						"^/api" : "/"
+						"^/sys" : "/sys"
 					}
 	            }
 	        }

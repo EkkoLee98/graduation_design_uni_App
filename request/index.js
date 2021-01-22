@@ -2,6 +2,13 @@ import Vue from 'vue'
 import qs from 'qs'
 import merge from 'lodash/merge'
 import axios from 'axios'
+const BASE_URL="http://localhost:8082"; //开发时使用本地接口，在上线时只需要修改此处接口为线上地址即可
+const SVR_URL="120.25.27.186:12001";
+if(process.env.NODE_ENV === 'development'){
+    console.log('开发环境')
+}else{
+    console.log('生产环境')
+}
 
 axios.defaults.adapter = function(config) {
     return new Promise((resolve, reject) => {
@@ -10,7 +17,7 @@ axios.defaults.adapter = function(config) {
         var buildURL = require('axios/lib/helpers/buildURL');
         uni.request({
             method: config.method.toUpperCase(),
-            url: config.baseURL + buildURL(config.url, config.params, config.paramsSerializer),
+            url: process.env.NODE_ENV === 'development' ? BASE_URL + buildURL(config.url, config.params, config.paramsSerializer) : SVR_URL + buildURL(config.url, config.params, config.paramsSerializer),
             header: config.headers,
             data: config.data,
             dataType: config.dataType,
@@ -33,7 +40,6 @@ axios.defaults.adapter = function(config) {
 
 // create an axios instance
 const service = axios.create({
-    baseURL: 'http://localhost:8082', // url = base url + request url
     withCredentials: true, // send cookies when cross-domain requests
     // timeout: 5000, // request timeout
     crossDomain: true,

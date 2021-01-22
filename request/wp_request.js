@@ -1,5 +1,5 @@
 const BASE_URL="http://localhost:8080/renren-fast"; //开发时使用本地接口，在上线时只需要修改此处接口为线上地址即可
-const SVR_URL="14.14.14.14:8080";
+const SVR_URL="120.25.27.186:12001";
 if(process.env.NODE_ENV === 'development'){
     console.log('开发环境')
 }else{
@@ -9,7 +9,7 @@ if(process.env.NODE_ENV === 'development'){
 export const myRequest = (options) => { //传入的options是一个json对象
 	return new Promise((resolve,reject) => {
 		uni.request({
-			url: process.env.NODE_ENV === 'development' ? BASE_URL+ options.url : SVR_URL+ options.url,
+			url: process.env.NODE_ENV === 'development' ? BASE_URL + options.url : SVR_URL + options.url,
 			method: options.methods || "GET",
 			data: options.data || {},
 			dataType: options.dataType || "json",
