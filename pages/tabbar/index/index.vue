@@ -11,6 +11,9 @@
 
 <script>
 	import {mapState} from 'vuex'
+	import {
+		getUUID
+	} from '@/utils/index.js'
 	// easyCom components/组件名/组件名.vue 局部引入
 	export default {
 		data() {
@@ -37,7 +40,88 @@
 				this.getLabel()
 			})
 		},
+		mounted() {
+			this.testInterface()
+		},
 		methods: {
+			async testInterface() {
+				//#ifdef H5
+				this.$axios({
+				  url: '/api/sys/login',
+				  method: 'post',
+				  data: this.$axios.adornParams({
+					'captcha': 'nfxp4',
+				    'username': 'admin',
+					'password': 'admin',
+					'uuid': '448847bf-5f98-4a06-86e6-cd2b6969fced'
+				  })
+				}).then(({data}) => {
+				  if (data && data.code === 0) {
+				    console.log(data)
+				  } else {
+				    console.log(data)
+				  }
+				  console.log(data.token)
+				  uni.setStorageSync('token', data.token);
+				})
+				console.log(uni.getStorageSync('token'))
+				this.$axios({
+				  url: '/api/sys/articleauthor/list',
+				  method: 'get',
+				  params: this.$axios.adornParams({
+				    'page': 1,
+				    'limit': 10
+				  })
+				}).then(({data}) => {
+				  if (data && data.code === 0) {
+				    console.log(data)
+				  } else {
+				    console.log(data)
+				  }
+				})
+				//#endif
+				//#ifndef H5
+				let res = await this.$myRequest({
+					methods: 'POST',
+					data: this.$axios.adornParams({
+					  'captcha': '6nanp',
+					  'username': 'admin',
+					  'password': 'admin',
+					  'uuid': 'a357e967-e08b-4002-87f6-a0cb853ea6ea'
+					}),
+					header: {token: uni.getStorageSync('token') || ''},
+					url: '/sys/login'
+				})
+				console.log(res)
+				
+				uni.setStorageSync('token', res.data.token);
+				console.log(uni.getStorageSync('token'))
+				
+				let res2 = await this.$myRequest({
+					methods: 'GET',
+					data: this.$axios.adornParams({
+					  'page': 1,
+					  'limit': 10
+					}),
+					header: {token: uni.getStorageSync('token') || ''},
+					url: '/sys/articleauthor/list'
+				})
+				console.log(res2)
+				// this.$myRequest({
+				// 	methods: 'POST',
+				// 	data: this.$axios.adornParams({
+				// 	  'captcha': 'dm5by',
+				// 	  'username': 'admin',
+				// 	  'password': 'admin',
+				// 	  'uuid': '33dd7e9a-0d46-414d-8529-d01e392dfa48'
+				// 	}),
+				// 	header: {token: uni.getStorageSync('token') || ''},
+				// 	url: '/sys/login'
+				// }).then(res => {
+				// 	console.log(res)
+				// })
+				//#endif
+			},
 			change(current){
 				this.tabIndex = current
 				this.activeIndex = current

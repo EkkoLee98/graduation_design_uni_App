@@ -66,6 +66,20 @@
         },
         "usingComponents" : true
     },
+	"h5" : {
+	    "devServer" : {
+	        "proxy": {
+	            "/api": {
+	                "target": "http://localhost:8080/renren-fast",
+	                "changeOrigin": true,
+	                "secure": false,
+					"pathRewrite": {
+						"^/api" : "/"
+					}
+	            }
+	        }
+	    }
+	},	
     "mp-alipay" : {
         "usingComponents" : true
     },
