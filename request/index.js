@@ -2,7 +2,7 @@ import Vue from 'vue'
 import qs from 'qs'
 import merge from 'lodash/merge'
 import axios from 'axios'
-const BASE_URL="http://localhost:8082"; //开发时使用本地接口，在上线时只需要修改此处接口为线上地址即可
+const BASE_URL="http://localhost:8081"; //开发时使用本地接口，在上线时只需要修改此处接口为线上地址即可
 const SVR_URL="120.25.27.186:12001";
 if(process.env.NODE_ENV === 'development'){
     console.log('开发环境')
@@ -99,6 +99,23 @@ service.adornData = (data = {}, openDefultdata = true, contentType = 'json') => 
   }
   data = openDefultdata ? merge(defaults, data) : data
   return contentType === 'json' ? JSON.stringify(data) : qs.stringify(data)
+}
+
+/**
+ * get请求参数处理
+ * @param {*} params 参数对象
+ * @param {*} openDefultParams 是否开启默认参数?
+ */
+service.adornParams = (params = {}, openDefultParams = true) => {
+  var defaults = {
+    't': new Date().getTime()
+  }
+  return openDefultParams ? merge(defaults, params) : params
+}
+
+service.adornUrl = (actionName) => {
+  // 非生产环境 && 开启代理, 接口前缀统一使用[/proxyApi/]前缀做代理拦截!
+  return (process.env.NODE_ENV !== 'production' && process.env.OPEN_PROXY ? '/proxyApi/' : 'http://localhost:8080/renren-fast') + actionName
 }
 
 export default service;

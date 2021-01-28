@@ -47,6 +47,15 @@
             "path" : "pages/feedback/feedback",
             "style" : {}
         }
+        ,{
+            "path" : "pages/sys/login",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
