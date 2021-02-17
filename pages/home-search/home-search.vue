@@ -79,7 +79,7 @@
 					title:"清空完成"
 				})
 			},
-			getSearch(value) {
+			async getSearch(value) {
 				if(!value){
 					this.searchList = []
 					this.is_histroy = true
@@ -87,18 +87,43 @@
 				}
 				this.is_histroy = false
 				this.loading = true
-				this.$api.get_search({
-					value,
-				}).then(res => {
-					const {
-						data
-					} = res
-					console.log(res);
-					this.loading = false
-					this.searchList = data
-				}).catch(()=>{
-					this.loading = false
+				let res2 = await this.$myRequest({
+					methods: 'GET',
+					data: this.$axios.adornParams({
+					  'page': 1,
+					  'limit': 10,
+					  'search': value,
+					}),
+					header: {token: uni.getStorageSync('token') || ''},
+					url: '/arct/article/list'
 				})
+				if (res2.data.code === 0) {
+					this.loading = false
+					console.log(res2.data.page.list)
+					res2.data.page.list.forEach(l => {
+						if (typeof l.cover === 'string' && l.cover !== null && l.cover !== '') {
+							l.cover = JSON.parse(l.cover)
+						}
+					})
+					this.searchList = res2.data.page.list
+					console.log(this.searchList)
+				} else {
+					this.loading = false
+				}
+				// console.log(res2)
+				// console.log(res2.data.page.list)
+				// this.$api.get_search({
+				// 	value,
+				// }).then(res => {
+				// 	const {
+				// 		data
+				// 	} = res
+				// 	console.log(res);
+				// 	this.loading = false
+				// 	this.searchList = data
+				// }).catch(()=>{
+				// 	this.loading = false
+				// })
 			}
 		}
 	}

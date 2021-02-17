@@ -7,7 +7,7 @@
 			</view>
 			<uni-load-more v-if="loading" status="loading" iconType="snow"></uni-load-more>
 			<view v-if="!loading" class="label-content">
-				<view class="label-content__item" v-for="(item,index) in labelList" :key="item._id">
+				<view class="label-content__item" v-for="(item,index) in labelList" :key="item.classifyId">
 					{{item.name}}
 					<uni-icons v-if="is_edit" class="icons-close" type="clear" size="20" color="red" @click="del(index)"></uni-icons>
 				</view>
@@ -23,7 +23,7 @@
 			</view>
 			<uni-load-more v-if="loading" status="loading" iconType="snow"></uni-load-more>
 			<view v-if="!loading" class="label-content">
-				<view class="label-content__item" v-for="(item,index) in list" :key="item._id" @click="add(index)">{{item.name}}</view>
+				<view class="label-content__item" v-for="(item,index) in list" :key="item.classifyId" @click="add(index)">{{item.name}}</view>
 			</view>
 			<view v-if="list.length === 0  && !loading" class="no-data">
 				当前没有数据
@@ -71,7 +71,7 @@
 			setUpdateLabel(label) {
 				let newArrIds = []
 				label.forEach(item => {
-					newArrIds.push(item._id)
+					newArrIds.push(item.classifyId)
 				})
 				uni.showLoading()
 				console.log(newArrIds);

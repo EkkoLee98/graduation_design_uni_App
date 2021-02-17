@@ -4,12 +4,12 @@
 			<image :src="item.avatar" mode="aspectFill"></image>
 		</view>
 		<view class="listauthor-content">
-			<view class="listauthor-content__title">{{item.author_name}}</view>
+			<view class="listauthor-content__title">{{item.authorName}}</view>
 			<view class="listauthor-content__des">
 				<view class="listauthor-content__des-label">{{item.professional}}</view>
 				<view class="listauthor-content__des-info">
-					<text>发帖 {{item.article_ids.length}}</text>
-					<text>粉丝 {{item.fans_count}}</text>
+					<text>发帖 {{item.len}}</text>
+					<text>粉丝 {{item.fansCount}}</text>
 				</view>
 			</view>
 		</view>
@@ -24,6 +24,17 @@
 				default () {
 					return {}
 				}
+			}
+		},
+		watch: {
+			item: {
+				handler(val) {
+					if (val.articleIds !== null) {
+						val.len = val.articleIds.split(',').length
+					}
+				},
+				immediate: true,
+				deep: true
 			}
 		},
 		data() {

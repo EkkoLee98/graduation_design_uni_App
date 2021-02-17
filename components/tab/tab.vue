@@ -39,7 +39,7 @@
 		},
 		methods: {
 			clickTab(item, index) {
-				// console.log(item,index);
+				console.log(item,index);
 				this.activeIndex = index
 				this.$emit('tab', {
 					data: item,

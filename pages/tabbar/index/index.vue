@@ -33,6 +33,7 @@
 			}
 		},
 		onLoad() {
+			this.getLabel()
 			uni.$on('labelChange',(res)=>{
 				this.tabList = []
 				this.tabIndex = 0
@@ -41,86 +42,49 @@
 			})
 		},
 		mounted() {
-			this.testInterface()
+			// this.testInterface()
+			console.log(uni.getStorageSync('token'))
+			console.log(uni.getStorageSync('author'))
+			console.log(uni.getStorageSync('role'))
 		},
 		methods: {
 			async testInterface() {
-				//#ifdef H5
-				this.$axios({
-				  url: '/sys/login',
-				  method: 'post',
-				  data: this.$axios.adornParams({
-					'captcha': 'nfxp4',
-				    'username': 'admin',
-					'password': 'admin',
-					'uuid': '448847bf-5f98-4a06-86e6-cd2b6969fced'
-				  })
-				}).then(({data}) => {
-				  if (data && data.code === 0) {
-				    console.log(data)
-				  } else {
-				    console.log(data)
-				  }
-				  console.log(data.token)
-				  uni.setStorageSync('token', data.token);
-				})
-				console.log(uni.getStorageSync('token'))
-				this.$axios({
-				  url: '/sys/articleauthor/list',
-				  method: 'get',
-				  params: this.$axios.adornParams({
-				    'page': 1,
-				    'limit': 10
-				  })
-				}).then(({data}) => {
-				  if (data && data.code === 0) {
-				    console.log(data)
-				  } else {
-				    console.log(data)
-				  }
-				})
-				//#endif
-				//#ifndef H5
-				let res = await this.$myRequest({
-					methods: 'POST',
-					data: this.$axios.adornParams({
-					  'captcha': '6nanp',
-					  'username': 'admin',
-					  'password': 'admin',
-					  'uuid': 'a357e967-e08b-4002-87f6-a0cb853ea6ea'
-					}),
-					header: {token: uni.getStorageSync('token') || ''},
-					url: '/sys/login'
-				})
-				console.log(res)
-				
-				uni.setStorageSync('token', res.data.token);
-				console.log(uni.getStorageSync('token'))
-				
-				let res2 = await this.$myRequest({
-					methods: 'GET',
-					data: this.$axios.adornParams({
-					  'page': 1,
-					  'limit': 10
-					}),
-					header: {token: uni.getStorageSync('token') || ''},
-					url: '/sys/articleauthor/list'
-				})
-				console.log(res2)
-				// this.$myRequest({
-				// 	methods: 'POST',
-				// 	data: this.$axios.adornParams({
-				// 	  'captcha': 'dm5by',
-				// 	  'username': 'admin',
-				// 	  'password': 'admin',
-				// 	  'uuid': '33dd7e9a-0d46-414d-8529-d01e392dfa48'
-				// 	}),
-				// 	header: {token: uni.getStorageSync('token') || ''},
-				// 	url: '/sys/login'
-				// }).then(res => {
-				// 	console.log(res)
+				// //#ifdef H5
+				// this.$axios({
+				//   url: '/sys/login',
+				//   method: 'post',
+				//   data: this.$axios.adornParams({
+				// 	'captcha': 'nfxp4',
+				//     'username': 'admin',
+				// 	'password': 'admin',
+				// 	'uuid': '448847bf-5f98-4a06-86e6-cd2b6969fced'
+				//   })
+				// }).then(({data}) => {
+				//   if (data && data.code === 0) {
+				//     console.log(data)
+				//   } else {
+				//     console.log(data)
+				//   }
+				//   console.log(data.token)
+				//   uni.setStorageSync('token', data.token);
 				// })
-				//#endif
+				// console.log(uni.getStorageSync('token'))
+				// this.$axios({
+				//   url: '/sys/articleauthor/list',
+				//   method: 'get',
+				//   params: this.$axios.adornParams({
+				//     'page': 1,
+				//     'limit': 10
+				//   })
+				// }).then(({data}) => {
+				//   if (data && data.code === 0) {
+				//     console.log(data)
+				//   } else {
+				//     console.log(data)
+				//   }
+				// })
+				// //#endif
+				// // #ifndef H5
 			},
 			change(current){
 				this.tabIndex = current
@@ -131,19 +95,37 @@
 				console.log(data,index);
 				this.activeIndex = index
 			},
-			getLabel() {
-				// 调用云函数方法
-				this.$api.get_label().then((res) => {
-					const {
-						data
-					} = res
-					console.log('标签 ',data);
-					data.unshift({
-						name:'全部'
-					})
-					this.tabList = data
-					// 	console.log(this.tabList);
+			async getLabel() {
+				
+				let res2 = await this.$myRequest({
+					methods: 'GET',
+					data: this.$axios.adornParams({
+					  'page': 1,
+					  'limit': 10
+					}),
+					header: {token: uni.getStorageSync('token') || ''},
+					url: '/arct/classify/list'
 				})
+				
+				res2.data.page.list.forEach(l => {
+					l.name = l.classify
+					l.current = true
+				})
+				let tmpArr = [{name: '全部'}]
+				this.tabList = tmpArr.concat(res2.data.page.list)
+				console.log(this.tabList)
+				// 调用云函数方法
+				// this.$api.get_label().then((res) => {
+				// 	const {
+				// 		data
+				// 	} = res
+				// 	console.log('标签 ',data);
+				// 	data.unshift({
+				// 		name:'全部'
+				// 	})
+				// 	this.tabList = data
+				// 	// 	console.log(this.tabList);
+				// })
 
 			}
 		}

@@ -5,7 +5,7 @@
 			"style": {
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "white",
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "首页"
 			}
 		}, {
 			"path": "pages/tabbar/follow/follow",
@@ -16,6 +16,11 @@
 			"path": "pages/tabbar/my/my",
 			"style": {
 				"navigationBarTitleText": "个人中心"
+			}
+		}, {
+			"path": "pages/assemble/assemble",
+			"style": {
+				"navigationBarTitleText": "模拟装机"
 			}
 		}, {
 			"path": "pages/home-search/home-search",
@@ -51,7 +56,56 @@
             "path" : "pages/sys/login",
             "style" :                                                                                    
             {
+				"app-plus": {
+					"titleNView": false
+				}
+                // "navigationBarTitleText": "",
+                // "enablePullDownRefresh": false
+            }
+            
+        },{
+            "path" : "pages/sys/register",
+            "style" :                                                                                    
+            {
+				"app-plus": {
+					"titleNView": false
+				}
+                // "navigationBarTitleText": "",
+                // "enablePullDownRefresh": false
+            }
+            
+        },{
+            "path" : "pages/sys/my_info",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "个人信息"
+                // "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/assemble/assemble",
+            "style" :                                                                                    
+            {
                 "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/upload-article/upload-article",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "编辑内容",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/upload-article-main/upload-article-main",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "发表文章",
                 "enablePullDownRefresh": false
             }
             
@@ -73,10 +127,10 @@
 			"selectedIconPath": "static/home-active.png",
 			"text": "首页"
 		}, {
-			"pagePath": "pages/tabbar/follow/follow",
+			"pagePath": "pages/assemble/assemble",
 			"iconPath": "static/follow.png",
 			"selectedIconPath": "static/follow-active.png",
-			"text": "关注"
+			"text": "组装"
 		}, {
 			"pagePath": "pages/tabbar/my/my",
 			"iconPath": "static/my.png",

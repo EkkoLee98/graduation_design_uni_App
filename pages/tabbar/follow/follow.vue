@@ -18,7 +18,7 @@
 				</swiper-item>
 				<swiper-item class="swiper-item">
 					<list-scroll>
-						<list-author v-for="item in  authorLists" :key="item.id" :item="item"></list-author>
+						<list-author v-for="item in authorLists" :key="item.id" :item="item"></list-author>
 						<view class="no-data" v-if="followShow">没有关注作者</view>
 					</list-scroll>
 				</swiper-item>
@@ -57,25 +57,45 @@
 			tab(index) {
 				this.activeIndex = index
 			},
-			getFollow() {
-				this.$api.get_follow().then(res => {
-					console.log(res);
-					const {
-						data
-					} = res
-					this.list = data
-					this.articleShow = this.list.length === 0 ? true : false
+			async getFollow() {
+				// this.$api.get_follow().then(res => {
+				// 	console.log(res);
+				// 	const {
+				// 		data
+				// 	} = res
+				// 	this.list = data
+				// 	this.articleShow = this.list.length === 0 ? true : false
+				// })
+				let res = await this.$myRequest({
+					methods: 'POST',
+					data: this.$axios.adornParams({
+					  'articleIds': uni.getStorageSync('author').articleLikesIds,
+					}),
+					header: {token: uni.getStorageSync('token') || '', 'Content-Type': 'application/x-www-form-urlencoded'},
+					url: '/arct/article/list/like'
 				})
+				this.list = res.data.articles
+				this.articleShow = this.list.length === 0 ? true : false
 			},
-			getAuhtor() {
-				this.$api.get_author().then(res => {
-					console.log(res);
-					const {
-						data
-					} = res
-					this.authorLists = data
-					this.followShow = this.authorLists.length === 0 ? true : false
+			async getAuhtor() {
+				// this.$api.get_author().then(res => {
+				// 	console.log(res);
+				// 	const {
+				// 		data
+				// 	} = res
+				// 	this.authorLists = data
+				// 	this.followShow = this.authorLists.length === 0 ? true : false
+				// })
+				let res = await this.$myRequest({
+					methods: 'POST',
+					data: this.$axios.adornParams({
+					  'authorIds': uni.getStorageSync('author').authorLikesIds,
+					}),
+					header: {token: uni.getStorageSync('token') || '', 'Content-Type': 'application/x-www-form-urlencoded'},
+					url: '/arct/author/list/like'
 				})
+				this.authorLists = res.data.authors
+				this.followShow = this.authorLists.length === 0 ? true : false
 			}
 		}
 	}

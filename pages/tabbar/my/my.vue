@@ -2,26 +2,26 @@
 	<view>
 		<view class="my-header">
 			<view class="my-header__background">
-				<image :src="userinfo.avatar" mode="aspectFill"></image>
+				<image :src="userInfo.avatar" mode="aspectFill"></image>
 			</view>
 			<view class="my-header__logo">
 				<view class="my-header__logo-box">
-					<image :src="userinfo.avatar" mode="aspectFill"></image>
+					<image :src="userInfo.avatar" mode="aspectFill"></image>
 				</view>
-				<text class="my-header__name">{{userinfo.author_name}}</text>
+				<text class="my-header__name">{{userInfo.authorName}}</text>
 			</view>
 			<view class="my-header__info">
 				<view class="my-header__info-box">
 					<text class="my-header__info-title">被关注</text>
-					<text>{{userinfo.follow_count}}</text>
+					<text>{{userInfo.followCount}}</text>
 				</view>
 				<view class="my-header__info-box">
 					<text class="my-header__info-title">粉丝</text>
-					<text>{{userinfo.fans_count}}</text>
+					<text>{{userInfo.fansCount}}</text>
 				</view>
 				<view class="my-header__info-box">
 					<text class="my-header__info-title">积分</text>
-					<text>{{userinfo.integral_count || 0}}</text>
+					<text>{{userInfo.integralCount || 0}}</text>
 				</view>
 			</view>
 		</view>
@@ -40,6 +40,20 @@
 				</view>
 				<uni-icons type="arrowright" size="14" color="#666"></uni-icons>
 			</view>
+			<view class="my-content__list"  @click="myInfo">
+				<view class="my-content__list-title">
+					<uni-icons class="icons" type="info-filled" size="16" color="#666"></uni-icons>
+					<text>修改信息</text>
+				</view>
+				<uni-icons type="arrowright" size="14" color="#666"></uni-icons>
+			</view>
+			<view class="my-content__list"  @click="myLike">
+				<view class="my-content__list-title">
+					<uni-icons class="icons" type="star" size="16" color="#666"></uni-icons>
+					<text>我的关注</text>
+				</view>
+				<uni-icons type="arrowright" size="14" color="#666"></uni-icons>
+			</view>
 		</view>
 		
 	</view>
@@ -54,12 +68,30 @@
 			}
 		},
 		computed:{
-			...mapState(['userinfo'])
+			...mapState(['userinfo']),
+			userInfo() {
+				return uni.getStorageSync('author')
+			}
 		},
 		onLoad() {
-			// console.log(this.userinfo);
+			console.log(this.userInfo);
+			this.getAuthor()
 		},
 		methods: {
+			async getAuthor() {
+				let res = await this.$myRequest({
+					methods: 'GET',
+					data: this.$axios.adornParams(),
+					header: {token: uni.getStorageSync('token') || ''},
+					url: `/arct/author/info/${uni.getStorageSync('author').id}`
+				})
+				uni.setStorageSync('author', res.data.author);
+			},
+			myInfo() {
+				uni.navigateTo({
+					url:'/pages/sys/my_info'
+				})
+			},
 			open(){
 				uni.navigateTo({
 					url:'/pages/my-article/my-article'
@@ -68,6 +100,11 @@
 			feedback(){
 				uni.navigateTo({
 					url:'/pages/feedback/feedback'
+				})
+			},
+			myLike(){
+				uni.switchTab({
+					url:'/pages/tabbar/follow/follow'
 				})
 			}
 		}

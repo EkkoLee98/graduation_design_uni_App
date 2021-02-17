@@ -15,7 +15,14 @@ export const myRequest = (options) => { //传入的options是一个json对象
 			dataType: options.dataType || "json",
 			header: options.header,
 			success: (res) => {
-				if (res.data.status !== 0){
+				if (res.data.code === 401) {
+					uni.showToast({
+						title:"token失效，请重新登录",
+					})
+					uni.navigateTo({
+						url: "/pages/sys/login"
+					})
+				} else if (res.data.code !== 0){
 					return uni.showToast({
 						title:"获取数据失败"
 					})

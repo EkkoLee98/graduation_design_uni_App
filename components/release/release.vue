@@ -10,6 +10,9 @@
 					<textarea class="popup-textarea" v-model="commentsValue" maxlength="200" fixed placeholder="请输入评论内容" />
 					<view class="popup-count">{{commentsValue.length}}/200</view>
 				</view>
+				<view class="popup-content">
+				    <uni-rate v-model="rate"/>
+				</view>
 			</view>
 		</uni-popup>
 	</view>
@@ -25,6 +28,7 @@
 		},
 		data() {
 			return {
+				rate: 0,
 				commentsValue:''
 			};
 		},
@@ -32,11 +36,14 @@
 			open(){
 				// 打开窗口之前清空内容 
 				this.commentsValue = ''
+				this.rate = 0
 				this.$refs.popup.open()
 			},
 			close(){
 				// 关闭窗口清空内容 
 				this.commentsValue = ''
+				this.rate = 0
+				this.$emit('reset')
 				this.$refs.popup.close()
 			},
 			submit(){
@@ -47,7 +54,8 @@
 					})
 					return
 				}
-				this.$emit('submit',this.commentsValue)
+				this.$emit('submit', {content: this.commentsValue, rate: this.rate})
+				this.rate = 0
 			}
 		}
 	}

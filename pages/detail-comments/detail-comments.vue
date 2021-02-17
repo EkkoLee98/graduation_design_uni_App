@@ -4,7 +4,7 @@
 			<comments-box :comments="item" @reply="reply"></comments-box>
 		</view>
 		<uni-load-more v-if="commentsList.length === 0 || commentsList.length > 5" iconType="snow" :status="loading"></uni-load-more>
-		<release ref="popup" @submit="submit"></release>
+		<release ref="popup" @reset="reset" @submit="submit"></release>
 	</view>
 </template>
 
@@ -13,6 +13,7 @@
 		data() {
 			return {
 				commentsList: [],
+				replyFormData:{},
 				article_id: '',
 				page: 1,
 				pageSize: 5,
@@ -22,7 +23,8 @@
 		onLoad(query) {
 			this.article_id = query.id
 			console.log(query);
-			this.getComments()
+			this.getDetail()
+			// this.getComments()
 		},
 		/**
 		 * 上拉加载
@@ -30,12 +32,27 @@
 		onReachBottom() {
 			if(this.loading === 'noMore') return
 			this.page++
-			this.getComments()
+			// this.getComments()
 		},
 		methods: {
+			// 获取详情信息
+			async getDetail() {
+				let res = await this.$myRequest({
+					methods: 'GET',
+					data: this.$axios.adornParams(),
+					header: {token: uni.getStorageSync('token') || ''},
+					url: `/arct/article/info/${this.article_id}`
+				})
+				console.log(res)
+				// 对象复制
+				// let oldFormData = JSON.parse(JSON.stringify(this.commentsList))
+				// oldFormData.push(...res.data.article.comments)
+				// this.commentsList = oldFormData
+				this.commentsList = res.data.article.comments
+			},
 			// 发布评论
 			submit(content){
-				this.setUpdateComment({content,...this.replyFormData})
+				this.setUpdateComment(content)
 			},
 			// 打开评论发布窗口
 			openComment(){
@@ -45,46 +62,90 @@
 			close(){
 				this.$refs.popup.close()
 			},
+			reset() {
+				console.log('清除状态')
+				this.replyFormData = {}
+			},
 			/**
 			 * 监听回复 
 			 * @param {Object} e
 			 */
 			reply(e){
-				this.replyFormData = {
-					"comment_id":e.comments.comment_id,
-					"is_reply": e.is_reply
+				console.log(e);
+				if (e.is_reply) {
+					this.replyFormData = {
+						toName: e.comments.author.authorName,
+						commentId: e.comments.commentId,
+						isReply: '1'
+					}
+				} else {
+					this.replyFormData = {
+						toName: e.comments.author.authorName,
+						commentId: e.comments.id,
+						isReply: '1'
+					}
 				}
-				if(e.comments.reply_id){
-					this.replyFormData.reply_id = e.comments.reply_id
-				}
-				console.log(this.replyFormData);
+				console.log(this.replyFormData)
 				this.openComment()
+			},
+			async updateAuthor() {
+				let res = await this.$myRequest({
+					methods: 'GET',
+					data: this.$axios.adornParams(),
+					header: {token: uni.getStorageSync('token') || ''},
+					url: `/arct/author/info/${uni.getStorageSync('author').id}`
+				})
+				uni.setStorageSync('author', res.data.author);
 			},
 			/**
 			 * 更新评论
 			 * @param {Object} content
 			 */
-			setUpdateComment(content){
-				const formdata ={
-					article_id:this.article_id,
-					...content
-				}
-				// 数据重置，避免key重复，添加重复数据
-				this.commentsList =  []
-				this.page = 1 
-				this.loading = 'loading'
-				// console.log(formdata);
+			async setUpdateComment(content){
+				console.log(content)
 				uni.showLoading()
-				this.$api.update_comment(formdata).then((res)=>{
-					console.log(res);
+				let params = {}
+				if (Object.keys(this.replyFormData).length === 0) {
+					params = {
+						articleId: this.article_id,
+						authorId: uni.getStorageSync('author').id,
+						createTime: new Date().getTime(),
+						isReply: '0',
+						commentContent: content.content,
+						rate: content.rate
+					}
+				} else {
+					params = {
+						authorId: uni.getStorageSync('author').id,
+						createTime: new Date().getTime(),
+						commentContent: content.content,
+						...this.replyFormData
+					}
+				}
+				let res = await this.$myRequest({
+					methods: 'POST',
+					data: this.$axios.adornParams(params),
+					header: {token: uni.getStorageSync('token') || '', 'Content-Type': 'application/json'},
+					url: `/arct/${Object.keys(this.replyFormData).length === 0 ? 'comments' : 'reply'}/save`
+				})
+				if (res.data.code === 0) {
 					uni.hideLoading()
 					uni.showToast({
 						title:'评论发布成功'
 					})
-					this.getComments()
 					this.close()
-					this.replyFormData = {}
-				})
+					this.reset()
+					this.getDetail()
+					this.updateAuthor()
+				} else {
+					uni.hideLoading()
+					uni.showToast({
+						title:'评论发布失败'
+					})
+					this.close()
+					this.reset()
+				}
+				console.log(res)
 			},
 			/**
 			 * 获取评论

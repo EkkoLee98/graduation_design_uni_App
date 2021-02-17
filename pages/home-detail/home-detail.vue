@@ -5,11 +5,11 @@
 		</view>
 		<view class="detail-header">
 			<view class="detail-header__logo">
-				<image :src="formData.author.avatar" mode="aspectFill"></image>
+				<image :src="author.avatar" mode="aspectFill"></image>
 			</view>
 			<view class="detail-header__content">
 				<view class="detail-header__content-title">
-					{{formData.author.author_name}}
+					{{author.authorName}}
 				</view>
 				<view class="detail-header__content-info">
 					<text>{{formData.create_time}}</text>
@@ -17,15 +17,15 @@
 					<text>{{formData.thumbs_up_count}} 赞</text>
 				</view>
 			</view>
-			<button class="detail-header__button" type="default" @click="follow(formData.author.id)">{{formData.is_author_like?'取消关注':'关注'}}</button>
+			<button class="detail-header__button" type="default" @click="follow(author.id)">{{isFollow?'取消关注':'关注'}}</button>
 		</view>
 		<view class="detail-content">
 			<view class="detail-html">
-				<u-parse :content="formData.content" :noData="noData"></u-parse>
+				<u-parse :content="article.content" :noData="noData"></u-parse>
 			</view>
 			<view class="detail-comment">
 				<view class="comment-title">最新评论</view>
-				<view class="comment-content" v-for="item in commentsList" :key="item.comment_id">
+				<view class="comment-content" v-for="item in article.comments" :key="item.id">
 					<comments-box :comments="item" @reply="reply"></comments-box>
 				</view>
 			</view>
@@ -40,14 +40,14 @@
 					<uni-icons type="chat" size="22" color="#F07373"></uni-icons>
 				</view>
 				<view class="detail-bottom__icons-box" @click="likeTap(formData._id)">
-					<uni-icons :type="formData.is_like?'heart-filled':'heart'" size="22" color="#F07373"></uni-icons>
+					<uni-icons :type="isLike?'heart-filled':'heart'" size="22" color="#F07373"></uni-icons>
 				</view>
 				<view class="detail-bottom__icons-box" @click="thumbsup(formData._id)">
-					<uni-icons :type="formData.is_thumbs_up?'hand-thumbsup-filled':'hand-thumbsup' " size="22" color="#F07373"></uni-icons>
+					<uni-icons :type="isThumbUp?'hand-thumbsup-filled':'hand-thumbsup' " size="22" color="#F07373"></uni-icons>
 				</view>
 			</view>
 		</view>
-		<release ref="popup" @submit="submit"></release>
+		<release ref="popup" @reset="reset" @submit="submit"></release>
 	</view>
 </template>
 
@@ -60,6 +60,11 @@
 		},
 		data() {
 			return {
+				article: {},
+				author: {},
+				isFollow: false,
+				isThumbUp: false,
+				isLike: false,
 				formData: {},
 				noData:'<p style="text-align:center;color:#666">详情加载中...</p>',
 				commentsList:[],
@@ -67,9 +72,21 @@
 				showPopup:false
 			}
 		},
+		computed: {
+			// isFollow() {
+			// 	// authorLikesIds
+			// 	if (uni.getStorageSync('author').authorLikesIds !== null) {
+			// 		return uni.getStorageSync('author').authorLikesIds.indexOf(this.author.id) > -1
+			// 	} else {
+			// 		return false
+			// 	}
+			// }
+		},
 		onLoad(query) {
 			this.formData = JSON.parse(query.params)
+			console.log(this.formData)
 			this.getDetail()
+			this.getAuthor()
 			this.getComments()
 		},
 		methods: {
@@ -103,48 +120,100 @@
 			close(){
 				this.$refs.popup.close()
 			},
+			reset() {
+				console.log('清除状态')
+				this.replyFormData = {}
+			},
 			// 发布
 			submit(content){
-				this.setUpdateComment({content,...this.replyFormData})
+				// this.setUpdateComment({content,...this.replyFormData})
+				this.setUpdateComment(content)
 			},
 			reply(e){
-				this.replyFormData = {
-					"comment_id":e.comments.comment_id,
-					"is_reply": e.is_reply
+				// this.replyFormData = {
+				// 	"comment_id":e.comments.comment_id,
+				// 	"is_reply": e.is_reply
+				// }
+				// if(e.comments.reply_id){
+				// 	this.replyFormData.reply_id = e.comments.reply_id
+				// }
+				console.log(e);
+				if (e.is_reply) {
+					this.replyFormData = {
+						toName: e.comments.author.authorName,
+						commentId: e.comments.commentId,
+						isReply: '1'
+					}
+				} else {
+					this.replyFormData = {
+						toName: e.comments.author.authorName,
+						commentId: e.comments.id,
+						isReply: '1'
+					}
 				}
-				if(e.comments.reply_id){
-					this.replyFormData.reply_id = e.comments.reply_id
-				}
-				console.log(this.replyFormData);
+				console.log(this.replyFormData)
 				this.openComment()
 			},
-			setUpdateComment(content){
-				const formdata ={
-					article_id:this.formData._id,
-					...content
-				}
+			async setUpdateComment(content){
+				console.log(content)
+				// const formdata ={
+				// 	article_id:this.formData._id,
+				// 	...content
+				// }
 				// console.log(formdata);
 				uni.showLoading()
-				this.$api.update_comment(formdata).then((res)=>{
-					console.log(res);
+				// this.$api.update_comment(formdata).then((res)=>{
+				// 	console.log(res);
+					// uni.hideLoading()
+					// uni.showToast({
+					// 	title:'评论发布成功'
+					// })
+				// 	this.getComments()
+				// 	this.close()
+				// 	this.replyFormData = {}
+				// })
+				let params = {}
+				if (Object.keys(this.replyFormData).length === 0) {
+					params = {
+						articleId: this.formData._id,
+						authorId: uni.getStorageSync('author').id,
+						createTime: new Date().getTime(),
+						isReply: '0',
+						commentContent: content.content,
+						rate: content.rate
+					}
+				} else {
+					params = {
+						authorId: uni.getStorageSync('author').id,
+						createTime: new Date().getTime(),
+						commentContent: content.content,
+						...this.replyFormData
+					}
+				}
+				let res = await this.$myRequest({
+					methods: 'POST',
+					data: this.$axios.adornParams(params),
+					header: {token: uni.getStorageSync('token') || '', 'Content-Type': 'application/json'},
+					url: `/arct/${Object.keys(this.replyFormData).length === 0 ? 'comments' : 'reply'}/save`
+				})
+				if (res.data.code === 0) {
 					uni.hideLoading()
 					uni.showToast({
 						title:'评论发布成功'
 					})
-					this.getComments()
 					this.close()
-					this.replyFormData = {}
-				})
-			},
-			// 获取详情信息
-			getDetail() {
-				this.$api.get_detail({
-					article_id: this.formData._id
-				}).then((res) => {
-					const {data} = res
-					this.formData = data
-					console.log(res);
-				})
+					this.reset()
+					this.getDetail()
+					this.updateAuthor()
+				} else {
+					uni.hideLoading()
+					uni.showToast({
+						title:'评论发布失败'
+					})
+					this.close()
+					this.reset()
+				}
+				console.log(res)
 			},
 			// 请求评论内容
 			getComments(){
@@ -156,49 +225,180 @@
 					this.commentsList = data
 				})
 			},
-			// 关注作者
-			setUpdateAuhtor(author_id){
-				uni.showLoading()
-				this.$api.update_author({
-					author_id
-				}).then(res=>{
-					uni.hideLoading()
-					this.formData.is_author_like = !this.formData.is_author_like
-					uni.$emit('update_author')
-					uni.showToast({
-						title:this.formData.is_author_like?'关注作者成功':'取消关注作者',
-						icon:'none'
-					})
+			// 获取详情信息
+			async getDetail() {
+				let res = await this.$myRequest({
+					methods: 'GET',
+					data: this.$axios.adornParams(),
+					header: {token: uni.getStorageSync('token') || ''},
+					url: `/arct/article/info/${this.formData._id}`
 				})
+				console.log(res)
+				if (Object.keys(this.article).length === 0) {
+					this.article = res.data.article
+				} else {
+					this.article.comments = res.data.article.comments
+				}
+
+				console.log(this.article)
+				// this.$api.get_detail({
+				// 	article_id: this.formData._id
+				// }).then((res) => {
+				// 	const {data} = res
+				// 	this.formData = data
+				// 	console.log(res);
+				// })
+			},
+			async getAuthor() {
+				let res_author = await this.$myRequest({
+					methods: 'GET',
+					data: this.$axios.adornParams(),
+					header: {token: uni.getStorageSync('token') || ''},
+					url: `/arct/author/info/${this.formData.author_id}`
+				})
+				this.author = res_author.data.author
+				// uni.setStorageSync('author', this.author);
+				console.log(this.author)
+				this.checkStatus()
+			},
+			async updateAuthor() {
+				let res = await this.$myRequest({
+					methods: 'GET',
+					data: this.$axios.adornParams(),
+					header: {token: uni.getStorageSync('token') || ''},
+					url: `/arct/author/info/${uni.getStorageSync('author').id}`
+				})
+				uni.setStorageSync('author', res.data.author);
+			},
+			checkStatus() {
+				if (uni.getStorageSync('author').authorLikesIds !== null) {
+					this.isFollow = uni.getStorageSync('author').authorLikesIds.indexOf(this.author.id) > -1
+				} else {
+					this.isFollow = false
+				}
+				if (uni.getStorageSync('author').articleLikesIds !== null) {
+					this.isLike = uni.getStorageSync('author').articleLikesIds.indexOf(this.formData._id) > -1
+				} else {
+					this.isLike = false
+				}
+				if (uni.getStorageSync('author').thumpsUpArticleIds !== null) {
+					this.isThumbUp = uni.getStorageSync('author').thumpsUpArticleIds.indexOf(this.formData._id) > -1
+				} else {
+					this.isThumbUp = false
+				}
+			},
+			// 关注作者
+			async setUpdateAuhtor(author_id){
+				uni.showLoading()
+				// this.$api.update_author({
+				// 	author_id
+				// }).then(res=>{
+				// 	uni.hideLoading()
+				// 	this.formData.is_author_like = !this.formData.is_author_like
+				// 	uni.$emit('update_author')
+				// 	uni.showToast({
+				// 		title:this.formData.is_author_like?'关注作者成功':'取消关注作者',
+				// 		icon:'none'
+				// 	})
+				// })
+				let res = await this.$myRequest({
+					methods: 'POST',
+					data: this.$axios.adornParams({
+					  'id': this.formData._id,
+					  'aid': uni.getStorageSync('author').id,
+					  'type': 'fan',
+					  'status': this.isFollow ? '0' : '1',
+					}),
+					header: {token: uni.getStorageSync('token') || '', 'Content-Type': 'application/x-www-form-urlencoded'},
+					url: '/arct/article/save/option'
+				})
+				if (res.data.code === 0) {
+					this.isFollow = !this.isFollow
+					uni.hideLoading()
+					this.updateAuthor()
+					setTimeout(() => {
+						uni.showToast({
+							title: this.isFollow ? '关注作者成功' : '取消关注作者',
+							icon: 'none'
+						})
+					}, 0)
+				}
+				uni.hideLoading()
 			},
 			// 收藏文章 
-			setUpadteLike(article_id){
+			async setUpadteLike(article_id){
 				uni.showLoading()
-				this.$api.update_like({
-					article_id
-				}).then(res=>{
-					uni.hideLoading()
-					this.formData.is_like = !this.formData.is_like
-					uni.$emit('update_article','follow')
-					uni.showToast({
-						title:this.formData.is_like ?'收藏成功':'取消收藏',
-						icon:'none'
-					})
-					console.log('收藏成功');
+				// this.$api.update_like({
+				// 	article_id
+				// }).then(res=>{
+				// 	uni.hideLoading()
+				// 	this.formData.is_like = !this.formData.is_like
+				// 	uni.$emit('update_article','follow')
+				// 	uni.showToast({
+				// 		title:this.formData.is_like ?'收藏成功':'取消收藏',
+				// 		icon:'none'
+				// 	})
+				// 	console.log('收藏成功');
+				// })
+				let res = await this.$myRequest({
+					methods: 'POST',
+					data: this.$axios.adornParams({
+					  'id': this.formData._id,
+					  'aid': uni.getStorageSync('author').id,
+					  'type': 'like',
+					  'status': this.isLike ? '0' : '1',
+					}),
+					header: {token: uni.getStorageSync('token') || '', 'Content-Type': 'application/x-www-form-urlencoded'},
+					url: '/arct/article/save/option'
 				})
+				if (res.data.code === 0) {
+					this.isLike = !this.isLike
+					uni.hideLoading()
+					this.updateAuthor()
+					setTimeout(() => {
+						uni.showToast({
+							title: this.isLike ? '收藏成功' : '取消收藏',
+							icon: 'none'
+						})
+					}, 0)
+				}
+				uni.hideLoading()
 			},
-			setUpdateThumbs(article_id){
+			async setUpdateThumbs(article_id){
 				uni.showLoading()
-				this.$api.update_thumbsup({
-					article_id
-				}).then(res=>{
-					uni.hideLoading()
-					this.formData.is_thumbs_up = true
-					this.formData.thumbs_up_count++
-					uni.showToast({
-						title:res.msg
-					})
+				// this.$api.update_thumbsup({
+				// 	article_id
+				// }).then(res=>{
+				// 	uni.hideLoading()
+				// 	this.formData.is_thumbs_up = true
+				// 	this.formData.thumbs_up_count++
+				// 	uni.showToast({
+				// 		title:res.msg
+				// 	})
+				// })
+				let res = await this.$myRequest({
+					methods: 'POST',
+					data: this.$axios.adornParams({
+					  'id': this.formData._id,
+					  'aid': uni.getStorageSync('author').id,
+					  'type': 'thumbsup',
+					  'status': this.isThumbUp ? '0' : '1',
+					}),
+					header: {token: uni.getStorageSync('token') || '', 'Content-Type': 'application/x-www-form-urlencoded'},
+					url: '/arct/article/save/option'
 				})
+				if (res.data.code === 0) {
+					this.isThumbUp = !this.isThumbUp
+					uni.hideLoading()
+					this.updateAuthor()
+					setTimeout(() => {
+						uni.showToast({
+							title: this.isThumbUp ? '点赞成功' : '取消点赞',
+							icon: 'none'
+						})
+					}, 0)
+				}
+				uni.hideLoading()
 			}
 		}
 	}

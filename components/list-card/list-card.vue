@@ -3,7 +3,7 @@
 		<!-- 基础卡片 -->
 		<view v-if="item.mode === 'base'" class="listcard">
 			<view class="listcard-image">
-				<image :src="item.cover[0]" mode="aspectFill"></image>
+				<image :src="item.cover[0].url" mode="aspectFill"></image>
 			</view>
 			<view class="listcard-content">
 				<view class="listcard-content__title">
@@ -14,7 +14,7 @@
 					<view class="listcard-content__des-label">
 						<view class="listcard-content__des-label-item">{{item.classify}}</view>
 					</view>
-					<view class="listcard-content__des-browse">{{item.browse_count}}浏览</view>
+					<view class="listcard-content__des-browse">{{item.browseCount}}浏览</view>
 				</view>
 			</view>
 		</view>
@@ -28,21 +28,21 @@
 				</view>
 				<view class="listcard-image">
 					<view v-if="index < 3" v-for="(item,index) in item.cover" :key="index" class="listcard-image__item">
-						<image :src="item" mode="aspectFill"></image>
+						<image :src="item.url" mode="aspectFill"></image>
 					</view>
 				</view>
 				<view class="listcard-content__des">
 					<view class="listcard-content__des-label">
 						<view class="listcard-content__des-label-item">{{item.classify}}</view>
 					</view>
-					<view class="listcard-content__des-browse">{{item.browse_count}}浏览</view>
+					<view class="listcard-content__des-browse">{{item.browseCount}}浏览</view>
 				</view>
 			</view>
 		</view>
 		<!-- 大图模式 -->
 		<view v-if="item.mode === 'image'" class="listcard mode-image">
 			<view class="listcard-image">
-				<image :src="item.cover[0]" mode="aspectFill"></image>
+				<image :src="item.cover[0].url" mode="aspectFill"></image>
 			</view>
 			<view class="listcard-content">
 				<view class="listcard-content__title">
@@ -54,7 +54,7 @@
 					<view class="listcard-content__des-label">
 						<view class="listcard-content__des-label-item">{{item.classify}}</view>
 					</view>
-					<view class="listcard-content__des-browse">{{item.browse_count}}浏览</view>
+					<view class="listcard-content__des-browse">{{item.browseCount}}浏览</view>
 				</view>
 			</view>
 		</view>
@@ -75,6 +75,18 @@
 				default: ''
 			}
 		},
+		watch: {
+			item: {
+				handler(val) {
+					// console.log(JSON.parse(val.cover)[0])
+					if (typeof val.cover === 'string' && val.cover !== null && val.cover !== '') {
+						val.cover = JSON.parse(val.cover)
+					}
+				},
+				immediate: true,
+				deep: true
+			}
+		},
 		data() {
 			return {
 
@@ -85,12 +97,13 @@
 				const item = this.item
 				this.$emit('click', item)
 				const params = {
-					_id: item._id,
+					_id: item.id,
 					title: item.title,
+					author_id: item.authorId,
 					author: item.author,
-					create_time: item.create_time,
-					thumbs_up_count: item.thumbs_up_count,
-					browse_count: item.browse_count
+					create_time: item.createTime,
+					thumbs_up_count: item.thumbsUpCount,
+					browse_count: item.browseCount
 				}
 				console.log('打开详情页面', params);
 				// 传参注意长度
