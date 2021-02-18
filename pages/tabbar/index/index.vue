@@ -107,13 +107,16 @@
 					url: '/arct/classify/list'
 				})
 				
-				res2.data.page.list.forEach(l => {
-					l.name = l.classify
-					l.current = true
-				})
-				let tmpArr = [{name: '全部'}]
-				this.tabList = tmpArr.concat(res2.data.page.list)
-				console.log(this.tabList)
+				if (res2.data.code === 0) {
+					res2.data.page.list.forEach(l => {
+						l.name = l.classify
+						l.current = true
+					})
+					let tmpArr = [{name: '全部'}]
+					this.tabList = tmpArr.concat(res2.data.page.list)
+					console.log(this.tabList)
+				}
+			
 				// 调用云函数方法
 				// this.$api.get_label().then((res) => {
 				// 	const {
