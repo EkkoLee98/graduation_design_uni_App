@@ -84,15 +84,6 @@
             
         }
         ,{
-            "path" : "pages/assemble/assemble",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
             "path" : "pages/upload-article/upload-article",
             "style" :                                                                                    
             {

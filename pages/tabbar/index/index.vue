@@ -41,6 +41,9 @@
 				this.getLabel()
 			})
 		},
+		created() {
+			this.getLabel()
+		},
 		mounted() {
 			// this.testInterface()
 			console.log(uni.getStorageSync('token'))
@@ -49,7 +52,6 @@
 		},
 		methods: {
 			async testInterface() {
-				// //#ifdef H5
 				// this.$axios({
 				//   url: '/sys/login',
 				//   method: 'post',
@@ -83,8 +85,6 @@
 				//     console.log(data)
 				//   }
 				// })
-				// //#endif
-				// // #ifndef H5
 			},
 			change(current){
 				this.tabIndex = current

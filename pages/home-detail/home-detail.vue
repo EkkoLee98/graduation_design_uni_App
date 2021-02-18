@@ -12,9 +12,9 @@
 					{{author.authorName}}
 				</view>
 				<view class="detail-header__content-info">
-					<text>{{formData.create_time}}</text>
-					<text>{{formData.browse_count}} 浏览</text>
-					<text>{{formData.thumbs_up_count}} 赞</text>
+					<text>{{article.createTime}}</text>
+					<text>{{article.browseCount}} 浏览</text>
+					<text>{{article.thumbsUpCount}} 赞</text>
 				</view>
 			</view>
 			<button class="detail-header__button" type="default" @click="follow(author.id)">{{isFollow?'取消关注':'关注'}}</button>
