@@ -8,13 +8,13 @@
 				<image :src="author.avatar" mode="aspectFill"></image>
 			</view>
 			<view class="detail-header__content">
-				<view class="detail-header__content-title">
+				<view class="detail-header__content-title" v-if="author.authorName !== undefined">
 					{{author.authorName}}
 				</view>
 				<view class="detail-header__content-info">
-					<text>{{article.createTime}}</text>
-					<text>{{article.browseCount}} 浏览</text>
-					<text>{{article.thumbsUpCount}} 赞</text>
+					<text v-if="article.createTime !== undefined">{{article.createTime}}</text>
+					<text v-if="article.browseCount !== undefined">{{article.browseCount}} 浏览</text>
+					<text v-if="article.thumbsUpCount !== undefined">{{article.thumbsUpCount}} 赞</text>
 				</view>
 			</view>
 			<button class="detail-header__button" type="default" @click="follow(author.id)">{{isFollow?'取消关注':'关注'}}</button>
