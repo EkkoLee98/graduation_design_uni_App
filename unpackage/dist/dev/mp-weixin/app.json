@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/sys/login",
     "pages/tabbar/index/index",
     "pages/tabbar/follow/follow",
     "pages/tabbar/my/my",
@@ -10,7 +11,6 @@
     "pages/detail-comments/detail-comments",
     "pages/my-article/my-article",
     "pages/feedback/feedback",
-    "pages/sys/login",
     "pages/sys/register",
     "pages/sys/my_info",
     "pages/upload-article/upload-article",
