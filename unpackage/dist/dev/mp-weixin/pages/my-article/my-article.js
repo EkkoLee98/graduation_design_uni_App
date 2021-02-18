@@ -194,7 +194,15 @@ var _default =
                     header: { token: uni.getStorageSync('token') || '', 'Content-Type': 'application/x-www-form-urlencoded' },
                     url: '/arct/article/list/my' }));case 2:res = _context.sent;
 
-                _this.lists = res.data.articles;case 4:case "end":return _context.stop();}}}, _callee);}))();
+                res.data.articles.forEach(function (a) {
+                  if (typeof a.cover === 'string' && a.cover !== null && a.cover !== '') {
+                    a.cover = JSON.parse(a.cover);
+                    console.log('===========');
+                    console.log(a.cover);
+                    console.log('===========');
+                  }
+                });
+                _this.lists = res.data.articles;case 5:case "end":return _context.stop();}}}, _callee);}))();
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

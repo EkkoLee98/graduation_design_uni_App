@@ -79,12 +79,13 @@
 			item: {
 				handler(val) {
 					// console.log(JSON.parse(val.cover)[0])
-					if (typeof val.cover === 'string' && val.cover !== null && val.cover !== '') {
-						val.cover = JSON.parse(val.cover)
-						console.log('===========')
-						console.log(val.cover)
-						console.log('===========')
-					}
+					// if (typeof val.cover === 'string' && val.cover !== null && val.cover !== '') {
+					// 	val.cover = JSON.parse(val.cover)
+					// 	console.log('===========')
+					// 	console.log(val.cover)
+					// 	console.log('===========')
+					// }
+					console.log(val.cover)
 				},
 				immediate: true,
 				deep: true

@@ -103,6 +103,15 @@
 					return
 				} else {
 					let oldList = this.listCatchData[current] || []
+					res2.data.page.list.forEach(l => {
+						if (typeof l.cover === 'string' && l.cover !== null && l.cover !== '') {
+							l.cover = JSON.parse(l.cover)
+							console.log('===========')
+							console.log(l.cover)
+							console.log('===========')
+						}
+						// l.cover = JSON.parse(l.cover)
+					})
 					oldList.push(...res2.data.page.list)
 					// 懒加载
 					this.$set(this.listCatchData, current, oldList)

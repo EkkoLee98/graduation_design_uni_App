@@ -194,7 +194,7 @@ var _default = {
     } },
 
   onLoad: function onLoad() {var _this = this;
-    this.getLabel();
+    // this.getLabel()
     uni.$on('labelChange', function (res) {
       _this.tabList = [];
       _this.tabIndex = 0;

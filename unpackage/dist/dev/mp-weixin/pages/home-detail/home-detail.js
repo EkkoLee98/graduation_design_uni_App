@@ -432,7 +432,10 @@ __webpack_require__.r(__webpack_exports__);
                 uni.setStorageSync('author', res.data.author);case 4:case "end":return _context4.stop();}}}, _callee4);}))();
     },
     checkStatus: function checkStatus() {
+      console.log('+++++');
       if (uni.getStorageSync('author').authorLikesIds !== null) {
+        console.log(uni.getStorageSync('author').authorLikesIds);
+        console.log(this.author.id);
         this.isFollow = uni.getStorageSync('author').authorLikesIds.indexOf(this.author.id) > -1;
       } else {
         this.isFollow = false;

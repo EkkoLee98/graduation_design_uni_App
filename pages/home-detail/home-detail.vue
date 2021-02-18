@@ -271,7 +271,10 @@
 				uni.setStorageSync('author', res.data.author);
 			},
 			checkStatus() {
+				console.log('+++++')
 				if (uni.getStorageSync('author').authorLikesIds !== null) {
+					console.log(uni.getStorageSync('author').authorLikesIds)
+					console.log(this.author.id)
 					this.isFollow = uni.getStorageSync('author').authorLikesIds.indexOf(this.author.id) > -1
 				} else {
 					this.isFollow = false

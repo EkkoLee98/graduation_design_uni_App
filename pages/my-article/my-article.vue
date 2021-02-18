@@ -38,6 +38,14 @@
 					header: {token: uni.getStorageSync('token') || '', 'Content-Type': 'application/x-www-form-urlencoded'},
 					url: '/arct/article/list/my'
 				})
+				res.data.articles.forEach(a => {
+					if (typeof a.cover === 'string' && a.cover !== null && a.cover !== '') {
+						a.cover = JSON.parse(a.cover)
+						console.log('===========')
+						console.log(a.cover)
+						console.log('===========')
+					}
+				})
 				this.lists = res.data.articles
 			}
 		}
