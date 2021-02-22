@@ -115,7 +115,7 @@ service.adornParams = (params = {}, openDefultParams = true) => {
 
 service.adornUrl = (actionName) => {
   // 非生产环境 && 开启代理, 接口前缀统一使用[/proxyApi/]前缀做代理拦截!
-  return (process.env.NODE_ENV !== 'production' && process.env.OPEN_PROXY ? '/proxyApi/' : 'http://localhost:8080/renren-fast') + actionName
+  return (process.env.NODE_ENV !== 'production' && process.env.OPEN_PROXY ? '/proxyApi/' : (process.env.NODE_ENV === 'development' ? 'http://localhost:8080/renren-fast' : 'https://lzebaba.club/renren-fast')) + actionName
 }
 
 export default service;

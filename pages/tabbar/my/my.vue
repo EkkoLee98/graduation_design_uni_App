@@ -64,17 +64,21 @@
 	export default {
 		data() {
 			return {
-				
+				userInfo: {}
 			}
 		},
 		computed:{
 			...mapState(['userinfo']),
-			userInfo() {
-				return uni.getStorageSync('author')
-			}
+			// userInfo() {
+			// 	return uni.getStorageSync('author')
+			// }
 		},
 		onLoad() {
 			console.log(this.userInfo);
+			this.userInfo = uni.getStorageSync('author')
+			this.getAuthor()
+		},
+		onShow() {
 			this.getAuthor()
 		},
 		methods: {
@@ -86,6 +90,7 @@
 					url: `/arct/author/info/${uni.getStorageSync('author').id}`
 				})
 				uni.setStorageSync('author', res.data.author);
+				this.userInfo = res.data.author
 			},
 			myInfo() {
 				uni.navigateTo({

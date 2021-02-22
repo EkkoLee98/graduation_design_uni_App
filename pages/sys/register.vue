@@ -84,7 +84,7 @@
 				// 	methods: 'GET',
 				// 	url: `/captcha.jpg?uuid=${this.uuid}`
 				// })
-				this.captchaPath = this.$axios.adornUrl(`/captcha.jpg?uuid=${this.uuid}`)
+				this.captchaPath = `http://159.75.101.5:8080/renren-fast/captcha.jpg?uuid=${this.uuid}`
 				console.log(this.captchaPath)
 			},
 			async formSubmit(e) {

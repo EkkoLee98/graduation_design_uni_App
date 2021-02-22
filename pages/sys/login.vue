@@ -21,7 +21,7 @@
 				</view>
 				<view style="display: flex;align-items: center;">
 					<view class="uni-form-item uni-column login-item">
-						<view style="display: inline-flex;" class="title">验证码：</view>
+						<view style="display: inline-flex;width: 160rpx" class="title">验证码：</view>
 						<input style="display: inline-flex;" v-model="dataForm.captcha" class="uni-input" name="input" placeholder="输入验证码" />
 					</view>
 					<img style="width: 220rpx;height: 80rpx;" :src="captchaPath" @click="getCaptcha()" alt="">
@@ -78,7 +78,7 @@
 				// 	methods: 'GET',
 				// 	url: `/captcha.jpg?uuid=${this.uuid}`
 				// })
-				this.captchaPath = this.$axios.adornUrl(`/captcha.jpg?uuid=${this.uuid}`)
+				this.captchaPath = `https://159.75.101.5/renren-fast/captcha.jpg?uuid=${this.uuid}`
 				console.log(this.captchaPath)
 			},
 			async formSubmit(e) {
@@ -117,19 +117,23 @@
 				})
 				console.log(res)
 				
-				uni.setStorageSync('token', res.data.token);
-				uni.setStorageSync('author', res.data.author);
-				uni.setStorageSync('role', res.data.role);
-				console.log(uni.getStorageSync('token'))
-				console.log(uni.getStorageSync('author'))
-				console.log(uni.getStorageSync('role'))
-				uni.switchTab({
-				  url: "/pages/tabbar/index/index"
-				})
-				// uni.showModal({
-				// 	content: '表单数据内容：' + JSON.stringify(formdata),
-				// 	showCancel: false
-				// });
+				if (res.data.code === 0) {
+					uni.setStorageSync('token', res.data.token);
+					uni.setStorageSync('author', res.data.author);
+					uni.setStorageSync('role', res.data.role);
+					console.log(uni.getStorageSync('token'))
+					console.log(uni.getStorageSync('author'))
+					console.log(uni.getStorageSync('role'))
+					uni.switchTab({
+					  url: "/pages/tabbar/index/index"
+					})
+				} else {
+					uni.showModal({
+						content: '登陆失败',
+					});
+				}
+				
+
 			},
 			formReset: function(e) {
 				console.log('清空数据')

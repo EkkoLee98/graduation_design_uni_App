@@ -170,7 +170,24 @@ var _default =
       title: '',
       cover: [],
       coverName: [],
-      mode: '' };
+      mode: '',
+      modeRadio: [
+      {
+        label: '普通',
+        value: 'base',
+        checked: false },
+
+      {
+        label: '多图',
+        value: 'column',
+        checked: false },
+
+      {
+        label: '大图',
+        value: 'image',
+        checked: false }] };
+
+
 
   },
   // computed: {
@@ -251,9 +268,20 @@ var _default =
     },
     radioChange: function radioChange(e) {
       this.mode = e.detail.value;
+      this.modeRadio.forEach(function (m) {
+        if (m.value === e.detail.value) {
+          m.checked = true;
+        } else {
+          m.checked = false;
+        }
+      });
       console.log(this.mode);
     },
     uploadCover: function uploadCover() {var _this2 = this;
+      uni.setStorageSync('title', this.title);
+      uni.setStorageSync('mode', this.mode);
+      uni.setStorageSync('cover', this.cover);
+      uni.setStorageSync('coverName', this.coverName);
       if (this.cover.length === 3) {
         uni.showToast({
           title: '最多可上传三张' });
@@ -264,6 +292,7 @@ var _default =
         success: function success(chooseImageRes) {
           var tempFilePaths = chooseImageRes.tempFilePaths;
           uni.uploadFile({
+            // url: 'https://159.75.101.5/renren-fast/api/upload', //仅为示例，非真实的接口地址
             url: 'http://localhost:8080/renren-fast/api/upload', //仅为示例，非真实的接口地址
             filePath: tempFilePaths[0],
             name: 'file',

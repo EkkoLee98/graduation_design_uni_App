@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "编辑内容",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "robin-editor": "/uni_modules/uniapp-editor/components/robin-editor/robin-editor"
+  }
+}

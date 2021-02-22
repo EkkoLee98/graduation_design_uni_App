@@ -98,19 +98,19 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
 {
-  onLaunch: function onLaunch() {var _this = this;
+  onLaunch: function onLaunch() {
     console.log('App Launch');
-    // 5e76254858d922004d6c9cdc
-    // 请求接口，异步
-    this.$api.get_user({
-      user_id: '5fbe4b44822f1e0001eab420' }).
-    then(function (res) {
-      // console.log(res);
-      var
-      data =
-      res.data;
-      _this.$store.dispatch('set_userinfo', data);
-    });
+    // // 5e76254858d922004d6c9cdc
+    // // 请求接口，异步
+    // this.$api.get_user({
+    // 	user_id: '5fbe4b44822f1e0001eab420'
+    // }).then((res) => {
+    // 	// console.log(res);
+    // 	const {
+    // 		data
+    // 	} = res
+    // 	this.$store.dispatch('set_userinfo', data)
+    // })
   },
   onShow: function onShow() {
     console.log('App Show');

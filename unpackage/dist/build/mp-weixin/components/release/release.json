@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "uni-popup": "/components/uni-popup/uni-popup",
+    "uni-rate": "/components/uni-rate/uni-rate"
+  },
+  "component": true
+}

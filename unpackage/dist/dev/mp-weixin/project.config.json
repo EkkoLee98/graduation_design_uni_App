@@ -9,7 +9,7 @@
     "enhance": false,
     "postcss": true,
     "preloadBackgroundData": false,
-    "minified": true,
+    "minified": false,
     "newFeature": false,
     "coverView": true,
     "nodeModules": false,
@@ -21,17 +21,20 @@
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
     "compileHotReLoad": false,
-    "useMultiFrameRuntime": false,
+    "useMultiFrameRuntime": true,
     "useApiHook": true,
+    "useApiHostProcess": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
     },
     "enableEngineNative": false,
+    "bundle": false,
     "useIsolateContext": true,
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": false,
+    "userConfirmedBundleSwitch": false,
     "packNpmManually": false,
     "packNpmRelationList": [],
     "minifyWXSS": true
@@ -39,9 +42,7 @@
   "compileType": "miniprogram",
   "libVersion": "",
   "appid": "wx27a3ffdbc1dee2e0",
-  "projectname": "imooc-news",
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
+  "projectname": "电脑产品推荐系统",
   "condition": {
     "search": {
       "list": []

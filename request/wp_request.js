@@ -1,5 +1,8 @@
-const BASE_URL="http://localhost:8080/renren-fast"; //开发时使用本地接口，在上线时只需要修改此处接口为线上地址即可
-const SVR_URL="http://120.25.27.186:12001";
+// const BASE_URL="https://159.75.101.5/renren-fast"; //开发时使用本地接口，在上线时只需要修改此处接口为线上地址即可
+const BASE_URL="http://localhost:8080/renren-fast";
+// const SVR_URL="https://lzebaba.club/renren-fast";
+const SVR_URL="https://159.75.101.5/renren-fast";
+
 if(process.env.NODE_ENV === 'development'){
     console.log('开发环境')
 }else{

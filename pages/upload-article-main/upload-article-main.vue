@@ -1,24 +1,24 @@
 <template>
-	<div>
+	<div style="padding: 10rpx;">
 		<div class="form-item">
 			<span>标题: </span>
 			<input style="margin-left: 50rpx;" v-model="title"/>
 		</div>
 		<div class="form-item">
 			<span>内容: </span>
-			<button size="mini" type="primary" @click="editContent">编辑内容</button>
+			<button size="mini" style="margin-left: 40rpx;" type="primary" @click="editContent">编辑内容</button>
 		</div>
 		<div class="form-item">
 			<span>模式: </span>
             <radio-group style="margin-left: 50rpx;" @change="radioChange">
-			    <label class="radio"><radio value="base" :checked="mode === '普通'"/>普通</label>
-			    <label class="radio" style="margin-left: 30rpx;"><radio value="column" :checked="mode === '多图'"/>多图</label>
-				<label class="radio" style="margin-left: 30rpx;"><radio value="image" :checked="mode === '大图'"/>大图</label>
+				<label class="radio" style="margin-left: 30rpx;" v-for="(item, index) in modeRadio" :key="item.label">
+				  <radio :value="item.value" :checked="item.checked"/> {{item.label}}
+				</label>
             </radio-group>
 		</div>
 		<div class="form-item">
 			<span>封面图: </span>
-			<button type="primary" size="mini" @click="uploadCover">上传封面图</button>
+			<button type="primary" style="margin-left: 40rpx;" size="mini" @click="uploadCover">上传封面图</button>
 		</div>
 		<div class="form-item" style="display: flex;flex-direction: column;">
 			<view v-for="(item, index) in coverName" :key="item">
@@ -38,7 +38,24 @@
 				title: '',
 				cover: [],
 				coverName: [],
-				mode: ''
+				mode: '',
+				modeRadio: [
+					{
+						label: '普通',
+						value: 'base',
+						checked: false
+					},
+					{
+						label: '多图',
+						value: 'column',
+						checked: false
+					},
+					{
+						label: '大图',
+						value: 'image',
+						checked: false
+					}
+				]
 			}
 		},
 		// computed: {
@@ -119,9 +136,20 @@
 			},
 			radioChange(e) {
 				this.mode = e.detail.value
+				this.modeRadio.forEach(m => {
+					if (m.value === e.detail.value) {
+						m.checked = true
+					} else {
+						m.checked = false
+					}
+				})
 				console.log(this.mode)
 			},
 			uploadCover() {
+				uni.setStorageSync('title', this.title)
+				uni.setStorageSync('mode', this.mode)
+				uni.setStorageSync('cover', this.cover)
+				uni.setStorageSync('coverName', this.coverName)
 				if (this.cover.length === 3) {
 					uni.showToast({
 						title:'最多可上传三张'
@@ -132,7 +160,8 @@
 				    success: (chooseImageRes) => {
 				        const tempFilePaths = chooseImageRes.tempFilePaths;
 				        uni.uploadFile({
-				            url: 'http://localhost:8080/renren-fast/api/upload', //仅为示例，非真实的接口地址
+							// url: 'https://159.75.101.5/renren-fast/api/upload', //仅为示例，非真实的接口地址
+							url: 'http://localhost:8080/renren-fast/api/upload', //仅为示例，非真实的接口地址
 				            filePath: tempFilePaths[0],
 				            name: 'file',
 							header: {token: uni.getStorageSync('token')},

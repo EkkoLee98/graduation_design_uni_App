@@ -105,7 +105,8 @@
 				    success: (chooseImageRes) => {
 				        const tempFilePaths = chooseImageRes.tempFilePaths;
 				        uni.uploadFile({
-				            url: 'http://localhost:8080/renren-fast/api/upload', //仅为示例，非真实的接口地址
+				            // url: 'https://159.75.101.5/renren-fast/api/upload', //仅为示例，非真实的接口地址
+							url: 'http://localhost:8080/renren-fast/api/upload', //仅为示例，非真实的接口地址
 				            filePath: tempFilePaths[0],
 				            name: 'file',
 							header: {token: uni.getStorageSync('token')},

@@ -1,5 +1,5 @@
 {
-    "name" : "imooc-news",
+    "name" : "电脑产品推荐系统",
     "appid" : "__UNI__EB833C9",
     "description" : "",
     "versionName" : "1.0.0",
@@ -59,27 +59,28 @@
     "mp-weixin" : {
         "appid" : "wx27a3ffdbc1dee2e0",
         "setting" : {
-            "urlCheck" : false,
+            "urlCheck" : true,
             "es6" : true,
             "postcss" : true,
-            "minified" : true
+            "minified" : false
         },
         "usingComponents" : true
     },
-	"h5" : {
-	    "devServer" : {
-	        "proxy": {
-	            "/sys": {
-	                "target": "http://localhost:8080/renren-fast",
-	                "changeOrigin": true,
-	                "secure": false,
-					"pathRewrite": {
-						"^/sys" : "/sys"
-					}
-	            }
-	        }
-	    }
-	},	
+    "h5" : {
+        "devServer" : {
+            "disableHostCheck" : true,
+            "proxy" : {
+                "/sys" : {
+                    "target" : "http://localhost:8080/renren-fast",
+                    "changeOrigin" : true,
+                    "secure" : false,
+                    "pathRewrite" : {
+                        "^/sys" : "/sys"
+                    }
+                }
+            }
+        }
+    },
     "mp-alipay" : {
         "usingComponents" : true
     },

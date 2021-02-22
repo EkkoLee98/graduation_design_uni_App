@@ -96,7 +96,7 @@ var components
 try {
   components = {
     uniIcons: function() {
-      return Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 321))
+      return Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 272))
     }
   }
 } catch (e) {
@@ -239,7 +239,7 @@ var _utils = __webpack_require__(/*! @/utils */ 161);function _interopRequireDef
                 // 	methods: 'GET',
                 // 	url: `/captcha.jpg?uuid=${this.uuid}`
                 // })
-                _this.captchaPath = _this.$axios.adornUrl("/captcha.jpg?uuid=".concat(_this.uuid));
+                _this.captchaPath = "http://159.75.101.5:8080/renren-fast/captcha.jpg?uuid=".concat(_this.uuid);
                 console.log(_this.captchaPath);case 3:case "end":return _context.stop();}}}, _callee);}))();
     },
     formSubmit: function formSubmit(e) {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var res;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:

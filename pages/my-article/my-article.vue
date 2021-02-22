@@ -13,7 +13,10 @@
 				lists: []
 			}
 		},
-		onLoad() {
+		// onLoad() {
+		// 	this.getMyArticle()
+		// },
+		created() {
 			this.getMyArticle()
 		},
 		methods: {
