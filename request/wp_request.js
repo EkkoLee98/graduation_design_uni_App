@@ -1,5 +1,5 @@
-// const BASE_URL="https://159.75.101.5/renren-fast"; //开发时使用本地接口，在上线时只需要修改此处接口为线上地址即可
-const BASE_URL="http://localhost:8080/renren-fast";
+const BASE_URL="https://159.75.101.5/renren-fast"; //开发时使用本地接口，在上线时只需要修改此处接口为线上地址即可
+// const BASE_URL="http://localhost:8080/renren-fast";
 // const SVR_URL="https://lzebaba.club/renren-fast";
 const SVR_URL="https://159.75.101.5/renren-fast";
 
@@ -23,7 +23,7 @@ export const myRequest = (options) => { //传入的options是一个json对象
 						title:"token失效，请重新登录",
 					})
 					uni.navigateTo({
-						url: "/pages/sys/login"
+						url: "/pages_sub/sys/login"
 					})
 				} else if (res.data.code !== 0){
 					return uni.showToast({

@@ -83,7 +83,7 @@
 			open() {
 				if (this.isSearch) return
 				uni.navigateTo({
-					url: "/pages/home-search/home-search"
+					url: "/pages_sub/home-search/home-search"
 				})
 			},
 			inputChange(e) {

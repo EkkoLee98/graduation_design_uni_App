@@ -222,7 +222,7 @@ var _default =
     open: function open() {
       if (this.isSearch) return;
       uni.navigateTo({
-        url: "/pages/home-search/home-search" });
+        url: "/pages_sub/home-search/home-search" });
 
     },
     inputChange: function inputChange(e) {var

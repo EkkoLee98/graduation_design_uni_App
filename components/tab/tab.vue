@@ -48,7 +48,7 @@
 			},
 			open(){
 				uni.navigateTo({
-					url:"/pages/home-label/home-label"
+					url:"/pages_sub/home-label/home-label"
 				})
 			}
 		}

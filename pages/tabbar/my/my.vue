@@ -94,22 +94,22 @@
 			},
 			myInfo() {
 				uni.navigateTo({
-					url:'/pages/sys/my_info'
+					url:'/pages_sub/sys/my_info'
 				})
 			},
 			open(){
 				uni.navigateTo({
-					url:'/pages/my-article/my-article'
+					url:'/pages_sub/my-article/my-article'
 				})
 			},
 			feedback(){
 				uni.navigateTo({
-					url:'/pages/feedback/feedback'
+					url:'/pages_sub/feedback/feedback'
 				})
 			},
 			myLike(){
 				uni.switchTab({
-					url:'/pages/tabbar/follow/follow'
+					url:'/pages_sub/follow/follow'
 				})
 			}
 		}

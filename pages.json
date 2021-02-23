@@ -1,30 +1,16 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-	    {
-	        "path" : "pages/sys/login",
-	        "style" :                                                                                    
-	        {
+		{
+		    "path" : "pages/login/login",
+		    "style" :                                                                                    
+		    {
 			    "app-plus": {
 				    "titleNView": false
 			    }
-	            // "navigationBarTitleText": "",
-	            // "enablePullDownRefresh": false
-	        }
-	    
-	    },
-		{
-			"path": "pages/tabbar/index/index",
-			"style": {
-				"navigationStyle": "custom",
-				"navigationBarTextStyle": "white",
-				"navigationBarTitleText": "首页"
-			}
-		}, {
-			"path": "pages/tabbar/follow/follow",
-			"style": {
-				"navigationBarTitleText": "关注"
-			}
-		}, {
+		        // "navigationBarTitleText": "",
+		        // "enablePullDownRefresh": false
+		    }
+		},{
 			"path": "pages/tabbar/my/my",
 			"style": {
 				"navigationBarTitleText": "个人中心"
@@ -34,74 +20,93 @@
 			"style": {
 				"navigationBarTitleText": "模拟装机"
 			}
-		}, {
-			"path": "pages/home-search/home-search",
+		},{
+			"path": "pages/tabbar/index/index",
 			"style": {
-				"navigationStyle": "custom"
-			}
-		}, {
-			"path": "pages/home-label/home-label",
-			"style": {
-				"navigationBarTitleText": "标签管理"
-			}
-		}, {
-			"path": "pages/home-detail/home-detail",
-			"style": {
-				"navigationBarTitleText": "详情"
-			}
-		}, {
-			"path": "pages/detail-comments/detail-comments",
-			"style": {
-				"navigationBarTitleText": "评论列表"
-			}
-		}, {
-			"path": "pages/my-article/my-article",
-			"style": {
-				"navigationBarTitleText": "我的文章"
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "white",
+				"navigationBarTitleText": "首页"
 			}
 		}
-	    ,{
-            "path" : "pages/feedback/feedback",
-            "style" : {}
-        },{
-            "path" : "pages/sys/register",
-            "style" :                                                                                    
-            {
-				"app-plus": {
-					"titleNView": false
-				}
-                // "navigationBarTitleText": "",
-                // "enablePullDownRefresh": false
-            }
-            
-        },{
-            "path" : "pages/sys/my_info",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "个人信息"
-                // "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/upload-article/upload-article",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "编辑内容",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/upload-article-main/upload-article-main",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "发表文章",
-                "enablePullDownRefresh": false
-            }
-            
-        }
     ],
+	"subPackages": [
+		{
+			"root": "pages_sub",
+			"pages": [
+                {
+					"path": "my-article/my-article",
+					"style": {
+						"navigationBarTitleText": "我的文章"
+					}
+				}
+				,{
+				    "path" : "upload-article/upload-article",
+				    "style" :                                                                                    
+				    {
+				        "navigationBarTitleText": "编辑内容",
+				        "enablePullDownRefresh": false
+				    }
+				    
+				}
+				,{
+				    "path" : "upload-article-main/upload-article-main",
+				    "style" :                                                                                    
+				    {
+				        "navigationBarTitleText": "发表文章",
+				        "enablePullDownRefresh": false
+				    }
+				    
+				},{
+				    "path" : "feedback/feedback",
+				    "style" : {}
+				},{
+				    "path" : "sys/register",
+				    "style" :                                                                                    
+				    {
+						"app-plus": {
+							"titleNView": false
+						}
+				        // "navigationBarTitleText": "",
+				        // "enablePullDownRefresh": false
+				    }
+				    
+				},{
+				    "path" : "sys/my_info",
+				    "style" :                                                                                    
+				    {
+				        "navigationBarTitleText": "个人信息"
+				        // "enablePullDownRefresh": false
+				    }
+				    
+				},{
+					"path": "follow/follow",
+					"style": {
+						"navigationBarTitleText": "关注"
+					}
+				},{
+					"path": "home-detail/home-detail",
+					"style": {
+						"navigationBarTitleText": "详情"
+					}
+				},{
+					"path": "home-search/home-search",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				}, {
+					"path": "home-label/home-label",
+					"style": {
+						"navigationBarTitleText": "标签管理"
+					}
+				}, {
+					"path": "detail-comments/detail-comments",
+					"style": {
+						"navigationBarTitleText": "评论列表"
+					}
+				}
+			]
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "电脑推荐系统",
@@ -128,5 +133,15 @@
 			"selectedIconPath": "static/my-active.png",
 			"text": "我的"
 		}]
+	},
+	"condition" : { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
 	}
 }

@@ -112,7 +112,7 @@
 				console.log('打开详情页面', params);
 				// 传参注意长度
 				uni.navigateTo({
-					url: '/pages/home-detail/home-detail?params=' + JSON.stringify(params)
+					url: '/pages_sub/home-detail/home-detail?params=' + JSON.stringify(params)
 				})
 			}
 		}

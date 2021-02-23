@@ -187,7 +187,7 @@ var _default2 =
     },
     open: function open() {
       uni.navigateTo({
-        url: "/pages/home-label/home-label" });
+        url: "/pages_sub/home-label/home-label" });
 
     } } };exports.default = _default2;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

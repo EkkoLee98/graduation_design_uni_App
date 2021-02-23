@@ -1,22 +1,28 @@
 {
   "pages": [
-    "pages/sys/login",
-    "pages/tabbar/index/index",
-    "pages/tabbar/follow/follow",
+    "pages/login/login",
     "pages/tabbar/my/my",
     "pages/assemble/assemble",
-    "pages/home-search/home-search",
-    "pages/home-label/home-label",
-    "pages/home-detail/home-detail",
-    "pages/detail-comments/detail-comments",
-    "pages/my-article/my-article",
-    "pages/feedback/feedback",
-    "pages/sys/register",
-    "pages/sys/my_info",
-    "pages/upload-article/upload-article",
-    "pages/upload-article-main/upload-article-main"
+    "pages/tabbar/index/index"
   ],
-  "subPackages": [],
+  "subPackages": [
+    {
+      "root": "pages_sub",
+      "pages": [
+        "my-article/my-article",
+        "upload-article/upload-article",
+        "upload-article-main/upload-article-main",
+        "feedback/feedback",
+        "sys/register",
+        "sys/my_info",
+        "follow/follow",
+        "home-detail/home-detail",
+        "home-search/home-search",
+        "home-label/home-label",
+        "detail-comments/detail-comments"
+      ]
+    }
+  ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "电脑推荐系统",
@@ -49,5 +55,5 @@
     ]
   },
   "usingComponents": {},
-  "sitemapLocation": "sitemap40.json"
+  "sitemapLocation": "sitemap55.json"
 }
