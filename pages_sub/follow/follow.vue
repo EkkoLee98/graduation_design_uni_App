@@ -75,6 +75,15 @@
 					url: '/arct/article/list/like'
 				})
 				this.list = res.data.articles
+				res.data.articles.forEach(l => {
+					if (typeof l.cover === 'string' && l.cover !== null && l.cover !== '') {
+						l.cover = JSON.parse(l.cover)
+						console.log('===========')
+						console.log(l.cover)
+						console.log('===========')
+					}
+					// l.cover = JSON.parse(l.cover)
+				})
 				this.articleShow = this.list.length === 0 ? true : false
 			},
 			async getAuhtor() {

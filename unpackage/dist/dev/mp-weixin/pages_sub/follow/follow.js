@@ -239,7 +239,16 @@ var _default =
                     url: '/arct/article/list/like' }));case 2:res = _context.sent;
 
                 _this2.list = res.data.articles;
-                _this2.articleShow = _this2.list.length === 0 ? true : false;case 5:case "end":return _context.stop();}}}, _callee);}))();
+                res.data.articles.forEach(function (l) {
+                  if (typeof l.cover === 'string' && l.cover !== null && l.cover !== '') {
+                    l.cover = JSON.parse(l.cover);
+                    console.log('===========');
+                    console.log(l.cover);
+                    console.log('===========');
+                  }
+                  // l.cover = JSON.parse(l.cover)
+                });
+                _this2.articleShow = _this2.list.length === 0 ? true : false;case 6:case "end":return _context.stop();}}}, _callee);}))();
     },
     getAuhtor: function getAuhtor() {var _this3 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var res;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return (
 

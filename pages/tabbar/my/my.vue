@@ -108,7 +108,7 @@
 				})
 			},
 			myLike(){
-				uni.switchTab({
+				uni.navigateTo({
 					url:'/pages_sub/follow/follow'
 				})
 			}

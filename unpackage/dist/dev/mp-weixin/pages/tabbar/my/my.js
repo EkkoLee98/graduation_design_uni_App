@@ -263,7 +263,7 @@ var _vuex = __webpack_require__(/*! vuex */ 21);function _interopRequireDefault(
 
     },
     myLike: function myLike() {
-      uni.switchTab({
+      uni.navigateTo({
         url: '/pages_sub/follow/follow' });
 
     } } };exports.default = _default;
